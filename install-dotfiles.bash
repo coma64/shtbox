@@ -25,7 +25,7 @@ backup_file() {
     mv "${1}" "${BACKUP_DIRECTORY}/${1}"
 }
 
-if [ config checkout $1 ]; then
+if config checkout $1; then
     echo 'Checked out config.';
 else
     echo 'Backing up pre-existing dotfiles to ~/.config-backup';
