@@ -19,25 +19,17 @@ RUN pacman -S --noconfirm --needed \
         go \
         grep \
         groff \
-        hub \
         iproute2 \
         ipython \
-        jdk-openjdk \
         libtool \
-        ltrace \
         make \
         man-db \
         man-pages \
-        nasm \
         neovim \
-        nmap \
-        patch \
         sed \
-        strace \
         sudo \
         texinfo \
         tmux \
-        unzip \
         wget \
         zsh
 
