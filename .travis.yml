@@ -1,0 +1,7 @@
+services:
+  - docker
+
+script:
+- docker build -t shtbox .
+- docker run -i --rm --name sht shtbox
+- docker ps -a
