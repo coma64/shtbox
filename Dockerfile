@@ -1,4 +1,4 @@
-FROM archlinux:latest
+FROM archlinux:20200908
 
 RUN pacman -Syu --noconfirm
 RUN pacman-db-upgrade
@@ -27,23 +27,24 @@ RUN pacman -S --noconfirm --needed \
         man-pages \
         neovim \
         sed \
-        sudo \
         texinfo \
         tmux \
         wget \
         zsh
 
-RUN useradd -m -G wheel -s /bin/zsh coma
+RUN mkdir -p '/home/coma/.local/bin'
+RUN wget -o '/home/coma/.local/bin/gosu' 'https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64'
+
+RUN useradd -m -s /bin/zsh coma
 RUN usermod coma -p cc
 RUN usermod root -p cc
-RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 USER coma
 WORKDIR /home/coma
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "-o pipefail", "-c"]
 
-COPY install-dotfiles.bash .
-RUN bash install-dotfiles.bash
+COPY install-dotfiles .
+RUN ./install-dotfiles
 
 RUN mkdir -p /home/coma/.local/src/yay-git
 RUN git clone https://aur.archlinux.org/yay-git.git /home/coma/.local/src/yay-git
@@ -66,7 +67,7 @@ RUN source $HOME/.asdf/asdf.sh && pip install --user \
     tldr
 
 RUN source $HOME/.asdf/asdf.sh && asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-RUN bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+RUN bash -c '${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
 RUN source $HOME/.asdf/asdf.sh && asdf install nodejs latest
 RUN source $HOME/.asdf/asdf.sh && asdf global nodejs `asdf list nodejs | tail -n 1`
 
@@ -92,6 +93,6 @@ RUN yay -S --noconfirm \
 RUN source $HOME/.asdf/asdf.sh && asdf reshim
 
 USER root
-RUN sudo pacman -Scc --noconfirm
+RUN pacman -Scc --noconfirm
 
 ENTRYPOINT ["/bin/zsh"]
