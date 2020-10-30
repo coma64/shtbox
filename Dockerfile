@@ -47,7 +47,7 @@ USER coma
 WORKDIR /home/coma
 SHELL ["/bin/bash", "-c"]
 
-COPY install-dotfiles .
+COPY scripts/install-dotfiles .
 RUN ./install-dotfiles
 
 RUN mkdir -p /home/coma/.local/src/yay-git
