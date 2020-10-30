@@ -3,6 +3,9 @@ FROM archlinux:20200908
 RUN pacman -Syu --noconfirm
 RUN pacman-db-upgrade
 
+RUN pacman -S --noconfirm --needed reflector
+RUN reflector --latest 15 --sort rate --protocol https --save /etc/pacman.d/mirrorlist
+
 RUN pacman -S --noconfirm --needed \
     autoconf \
     binutils \
