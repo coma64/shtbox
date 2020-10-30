@@ -2,8 +2,10 @@
 # Download dotfiles and corresponding plugin managers
 # credits: https://www.atlassian.com/git/tutorials/dotfiles
 
-DOTFILES_DIRECTORY="${HOME}/.local/share/dotfiles"
-DOTFILES_BACKUP_DIRECTORY="${HOME}/.config-backup"
+DOTFILES_REPO="${1:-'https://github.com/coma64/dotfiles'}"
+DOTFILES_BRANCH="${2:-'master'}"
+DOTFILES_DIRECTORY="${DOTFILES_DIRECTORY:-${HOME}/.local/share/dotfiles}"
+DOTFILES_BACKUP_DIRECTORY="${DOTFILES_BACKUP_DIRECTORY:-${HOME}/.config-backup}"
 
 # zinit - zsh plugin manager
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
@@ -14,7 +16,7 @@ curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh \
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # My dotfiles
-git clone --bare 'https://github.com/coma64/dotfiles' "${DOTFILES_DIRECTORY}"
+git clone --bare "${DOTFILES_REPO}" "${DOTFILES_DIRECTORY}"
 
 err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
@@ -29,7 +31,7 @@ backup_file() {
     mv "$1" "${BACKUP_DIRECTORY}/$1"
 }
 
-if config checkout "$1"; then
+if config checkout "${DOTFILES_BRANCH}"; then
     echo 'Checked out config.';
 else
     echo 'Backing up pre-existing dotfiles to ~/.config-backup';
@@ -38,13 +40,13 @@ else
 
     export -f backup_file
     export DOTFILES_DIRECTORY, DOTFILES_BACKUP_DIRECTORY
-    config checkout "$1" 2>&1 \
+    config checkout "${DOTFILES_BRANCH}" 2>&1 \
         | grep '\s+\.' \
         | awk '{ print $1 }' \
         | xargs -I '{}' bash -c "backup_file '{}' && echo 'Backing up {}'"
 fi
 
-if config checkout "$1"; then
+if config checkout "${DOTFILES_BRANCH}"; then
     config config status.showUntrackedFiles no
 else
     err 'Failed installing dotfiles'
