@@ -4,40 +4,40 @@ RUN pacman -Syu --noconfirm
 RUN pacman-db-upgrade
 
 RUN pacman -S --noconfirm --needed \
-        autoconf \
-        binutils \
-        clang \
-        cmake \
-        curl \
-        fakeroot \
-        findutils \
-        gawk \
-        gdb \
-        gettext \
-        git \
-        gnu-netcat \
-        go \
-        grep \
-        groff \
-        iproute2 \
-        ipython \
-        libtool \
-        make \
-        man-db \
-        man-pages \
-        neovim \
-        sed \
-        texinfo \
-        tmux \
-        wget \
-        zsh
+    autoconf \
+    binutils \
+    clang \
+    cmake \
+    curl \
+    fakeroot \
+    findutils \
+    gawk \
+    gdb \
+    gettext \
+    git \
+    gnu-netcat \
+    go \
+    grep \
+    groff \
+    iproute2 \
+    ipython \
+    libtool \
+    make \
+    man-db \
+    man-pages \
+    neovim \
+    sed \
+    sudo \
+    texinfo \
+    tmux \
+    wget \
+    zsh
 
-RUN mkdir -p '/home/coma/.local/bin'
-RUN wget -o '/home/coma/.local/bin/gosu' 'https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64'
-
-RUN useradd -m -s /bin/zsh coma
+RUN useradd -m -G wheel -s /bin/zsh coma
 RUN usermod coma -p cc
 RUN usermod root -p cc
+
+RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 USER coma
 WORKDIR /home/coma
