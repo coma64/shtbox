@@ -1,5 +1,6 @@
 FROM archlinux:20200908
 
+# WARNING: Will not do anything if buildstep is cached
 RUN pacman -Syu --noconfirm
 RUN pacman-db-upgrade
 
@@ -44,7 +45,7 @@ RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 USER coma
 WORKDIR /home/coma
-SHELL ["/bin/bash", "-o pipefail", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 COPY install-dotfiles .
 RUN ./install-dotfiles
@@ -63,27 +64,27 @@ RUN git checkout `git describe --abbrev=0 --tags`
 RUN source $HOME/.asdf/asdf.sh && asdf plugin-add python
 RUN source $HOME/.asdf/asdf.sh && asdf install python 2.7.18
 RUN source $HOME/.asdf/asdf.sh && asdf install python latest
-RUN source $HOME/.asdf/asdf.sh && asdf global python `asdf list python | tail -n 1` 2.7.18
+RUN set -o pipefail && source $HOME/.asdf/asdf.sh && asdf global python `asdf list python | tail -n 1` 2.7.18
 
 RUN source $HOME/.asdf/asdf.sh && python3 -m pip install -U pip
-RUN source $HOME/.asdf/asdf.sh && pip install --user \
+RUN source $HOME/.asdf/asdf.sh && asdf reshim python && pip install --user \
     tldr
 
 RUN source $HOME/.asdf/asdf.sh && asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 RUN bash -c '${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
 RUN source $HOME/.asdf/asdf.sh && asdf install nodejs latest
-RUN source $HOME/.asdf/asdf.sh && asdf global nodejs `asdf list nodejs | tail -n 1`
+RUN set -o pipefail && source $HOME/.asdf/asdf.sh && asdf global nodejs `asdf list nodejs | tail -n 1`
 
-RUN source $HOME/.asdf/asdf.sh && npm install --global \
+RUN source $HOME/.asdf/asdf.sh && asdf reshim nodejs && npm install --global \
     yarn
-RUN source $HOME/.asdf/asdf.sh && yarn global add \
+RUN source $HOME/.asdf/asdf.sh && asdf reshim nodejs && yarn global add \
     nodemon
 
 RUN source $HOME/.asdf/asdf.sh && asdf plugin-add rust https://github.com/code-lever/asdf-rust.git
 RUN source $HOME/.asdf/asdf.sh && asdf install rust latest
-RUN source $HOME/.asdf/asdf.sh && asdf global rust `asdf list nodejs | tail -n 1`
+RUN set -o pipefail && source $HOME/.asdf/asdf.sh && asdf global rust `asdf list nodejs | tail -n 1`
 
-RUN source $HOME/.asdf/asdf.sh && cargo install \
+RUN source $HOME/.asdf/asdf.sh && asdf reshim rust && cargo install \
     lsd \
     du-dust \
     bat \
@@ -92,8 +93,6 @@ RUN source $HOME/.asdf/asdf.sh && cargo install \
 
 RUN yay -S --noconfirm \
     bat-extras
-
-RUN source $HOME/.asdf/asdf.sh && asdf reshim
 
 USER root
 RUN pacman -Scc --noconfirm
