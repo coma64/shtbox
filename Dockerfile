@@ -1,4 +1,4 @@
-FROM archlinux:20200908
+FROM archlinux:latest
 
 # WARNING: Will not do anything if buildstep is cached
 RUN pacman -Syu --noconfirm
