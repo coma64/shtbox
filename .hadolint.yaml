@@ -1,0 +1,3 @@
+# DL3007: Pinned versions don't make sense for this type of container
+ignored: 
+  - DL3007
