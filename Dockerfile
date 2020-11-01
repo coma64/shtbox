@@ -64,6 +64,7 @@ COPY ./scripts/install-dotfiles .
 RUN ./install-dotfiles
 
 RUN echo 'export TERM="xterm-256color"' >> "${HOME}/.profile"
+# hadolint ignore=SC2016
 RUN echo -e '\nsource "${HOME}/.profile"' >> "${HOME}/.config/zsh/.zshrc"
 
 COPY ./scripts/install-asdf .
