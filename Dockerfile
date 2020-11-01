@@ -1,5 +1,8 @@
 FROM archlinux:latest
 
+USER root
+SHELL ["/bin/bash", "-c"]
+
 # WARNING: Will not do anything if buildstep is cached
 RUN pacman -Syu --noconfirm
 RUN pacman-db-upgrade
