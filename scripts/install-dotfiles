@@ -2,6 +2,7 @@
 # Download dotfiles and corresponding plugin managers
 # credits: https://www.atlassian.com/git/tutorials/dotfiles
 
+# shellcheck source=scripts/util.bash
 source './util.bash'
 
 DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/coma64/dotfiles}"
