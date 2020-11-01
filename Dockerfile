@@ -18,16 +18,20 @@ RUN pacman -S --noconfirm --needed \
     curl \
     fakeroot \
     findutils \
+    fzf \
     gawk \
     gdb \
     gettext \
     git \
     gnu-netcat \
     go \
+    go \
     grep \
     groff \
     iproute2 \
     ipython \
+    jdk-openjdk \
+    jre-openjdk \
     libtool \
     make \
     man-db \
@@ -36,8 +40,10 @@ RUN pacman -S --noconfirm --needed \
     sed \
     sudo \
     texinfo \
+    thefuck \
     tmux \
     wget \
+    which \
     zsh
 
 RUN useradd -m -G wheel -s /bin/zsh coma
@@ -89,7 +95,8 @@ WORKDIR /home/coma/.local/src/yay-git
 RUN makepkg -si --noconfirm
 
 RUN yay -S --noconfirm \
-    bat-extras
+    bat-extras \
+    fasd
 
 USER root
 RUN pacman -Scc --noconfirm
