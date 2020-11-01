@@ -1,0 +1,29 @@
+#! /bin/bash
+# Install asdf-vm and plugins
+
+source './util.bash'
+
+# Install asdf
+git clone 'https://github.com/asdf-vm/asdf.git' "${HOME}/.asdf"
+cd "${HOME}/.asdf" || abort 'Failed cloning asdf-vm'
+git checkout "$(git describe --abbrev=0 --tags)"
+
+source "${HOME}/.asdf/asdf.sh"
+
+# python
+asdf plugin-add python
+asdf install python 2.7.18
+asdf install python latest
+asdf global python "$(asdf list python |  tail -n 1 | xargs)" 2.7.18
+
+# nodejs
+asdf plugin-add nodejs 'https://github.com/asdf-vm/asdf-nodejs.git'
+bash -c '${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+asdf install nodejs latest
+asdf global nodejs "$(asdf list nodejs |  tail -n 1 | xargs)"
+
+# rust
+asdf plugin-add rust 'https://github.com/code-lever/asdf-rust.git'
+asdf install rust latest
+asdf global rust "$(asdf list rust |  tail -n 1 | xargs)"
+
