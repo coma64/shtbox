@@ -92,4 +92,10 @@ USER root
 RUN pacman -Scc --noconfirm
 
 RUN rm -r /tmp/scripts
+WORKDIR /home/coma
+USER coma
+
+RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim rust && broot --install
+RUN nvim -c ':call dein#install()' -c ':q'
+
 ENTRYPOINT ["/bin/zsh"]
