@@ -30,6 +30,8 @@ RUN pacman -S --noconfirm --needed \
     man-db \
     man-pages \
     neovim \
+    python \
+    python-pip \
     sed \
     sudo \
     texinfo \
