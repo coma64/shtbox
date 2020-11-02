@@ -25,7 +25,6 @@ RUN pacman -S --noconfirm --needed \
     git \
     gnu-netcat \
     go \
-    go \
     grep \
     groff \
     iproute2 \
