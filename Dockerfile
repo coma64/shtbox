@@ -14,24 +14,17 @@ RUN pacman -S --noconfirm --needed \
     autoconf \
     binutils \
     clang \
-    cmake \
     curl \
     fakeroot \
     findutils \
     fzf \
     gawk \
-    gdb \
     gettext \
     git \
     gnu-netcat \
-    go \
-    go \
     grep \
     groff \
     iproute2 \
-    ipython \
-    jdk-openjdk \
-    jre-openjdk \
     libtool \
     make \
     man-db \
@@ -72,22 +65,15 @@ RUN ./install-asdf
 
 # python
 RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim python && python3 -m pip install -U pip
-RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim python && pip install --user \
-    tldr
+#RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim python && pip install --user \
 
 # node
 RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim nodejs && npm install --global \
     yarn
-RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim nodejs && yarn global add \
-    nodemon
+#RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim nodejs && yarn global add \
 
 # rust
-RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim rust && cargo install \
-    bat \
-    broot \
-    du-dust \
-    lsd \
-    ripgrep
+#RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim rust && cargo install \
 
 # yay
 RUN mkdir -p "${HOME}/.local/src/yay-git"
@@ -106,7 +92,6 @@ RUN rm -r /tmp/scripts
 WORKDIR /home/coma
 USER coma
 
-RUN source "${HOME}/.asdf/asdf.sh" && asdf reshim rust && broot --install
 RUN nvim -c ':call dein#install()' -c ':q'
 
 ENTRYPOINT ["/bin/zsh"]
