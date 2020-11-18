@@ -10,9 +10,3 @@ and some of the programms I use on a daily basis.
 Thought this might come in handy at some point.
 
 Had the idea when i stumbled upon [pwnbox](https://github.com/superkojiman/pwnbox).
-
-## TODO
-
-- Add lite branch with a less bloated container
-- Add docker hub repo
-- Switch to the official docker [build-push-action](https://github.com/docker/build-push-action)
